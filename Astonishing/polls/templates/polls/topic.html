@@ -3,4 +3,15 @@
 {% else %}
     <p>No topic specified</p>
 {% endif %}
-<a href="/polls/"> Back to the topic index</a>
+
+{% if topic %}
+
+    <p> {{ topic.description}}</p>
+
+{% else %}
+    <p>No topic specified</p> 
+{% endif %}
+<a href="{% url 'polls:index' %}"> Back to the topic index</a>
+
+
+    

@@ -1,7 +1,7 @@
 {% if latest_topic_list %}
     <ul>
     {% for topic in latest_topic_list %}
-        <li><a href="/polls/{{ topic.name }}/">{{ topic.name }}</a></li>
+        <li><a href="{% url 'polls:topic' topic.name %}">{{ topic.name }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
