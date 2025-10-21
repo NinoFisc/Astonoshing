@@ -14,8 +14,9 @@ class Customer(models.Model):
         return self.name
 
 class Topic(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     name = models.CharField(max_length=150)
-    description = models.CharField(max_length=150)
+    description = models.CharField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -26,7 +27,7 @@ class Question(models.Model):
     question_text = models.CharField(max_length= 250)
 
     def __str__(self):
-        return self.name
+        return self.question_text
 
 
         ## Need to migra and create the migrations
