@@ -11,6 +11,23 @@
 {% else %}
     <p>No topic specified</p> 
 {% endif %}
+
+{% if questions %}
+    <ul>
+        {% for question in questions %}
+            <li>
+                <p> {{question.question_text}} </p>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endif %}
+
+<form>
+    <label for="new_question">New question:</label>
+    <input type="text" id="new_question" new_question = 'new_question'><br><br>
+    <button type="submit">Submit</button>
+</form>
 <a href="{% url 'polls:index' %}"> Back to the topic index</a>
 
 
