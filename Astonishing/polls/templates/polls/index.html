@@ -7,3 +7,12 @@
 {% else %}
     <p>No polls are available.</p>
 {% endif %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p}}
+    <input type="submit" value="Add new topic">
+
+
+
+</form>

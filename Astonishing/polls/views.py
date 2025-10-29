@@ -1,3 +1,4 @@
+
 from django.shortcuts import redirect, render
 
 from django.http import Http404, HttpResponse
@@ -7,15 +8,37 @@ from django.template import context, loader
 
 from .models import Topic,Question,Customer
 
-from .forms import QuestionForm
+from .forms import QuestionForm, TopicForm
 
 # Create your views here.
 
 
 def index(request):
-    latest_topic_list = Topic.objects.all().order_by("-created_at")[:5]
-    context = {"latest_topic_list":latest_topic_list}
-    
+
+    try:
+        latest_topic_list = Topic.objects.all().order_by("-created_at")[:5]
+        customer = Customer.objects.all().order_by("created_at")[0]
+        context = {"latest_topic_list":latest_topic_list}
+
+        if request.method == 'POST':
+            form = TopicForm(request.POST)
+
+            if form.is_valid():
+                topic = form.save(commit=False)
+                topic.customer = customer
+                topic.save()
+
+
+        if request.method == 'GET':
+            form = TopicForm()
+
+    except Exception as e:
+        raise Http404(f'Error: {e}')
+
+    context = {
+        "latest_topic_list":latest_topic_list,
+        'form': form
+        }
     return render(request,
     "polls/index.html",
     context)
@@ -35,7 +58,6 @@ def topic(request, topic_name):
                 question.topic = topic
                 question.save()
         
-
 
         if request.method == 'GET':
             form = QuestionForm()
