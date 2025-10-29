@@ -23,10 +23,13 @@
 
 {% endif %}
 
-<form>
-    <label for="new_question">New question:</label>
-    <input type="text" id="new_question" new_question = 'new_question'><br><br>
-    <button type="submit">Submit</button>
+<form action="" method="post">
+    {% csrf_token %}
+    
+    {{ form.as_p}}
+    <input type="submit" value="Add question"> 
+    
+    
 </form>
 <a href="{% url 'polls:index' %}"> Back to the topic index</a>
 
