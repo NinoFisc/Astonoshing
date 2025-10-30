@@ -2,6 +2,17 @@
     <ul>
     {% for topic in latest_topic_list %}
         <li><a href="{% url 'polls:topic' topic.name %}">{{ topic.name }}</a></li>
+        <form method="post">
+            {% csrf_token %}
+            <input  type="hidden" name="delete_topic" value="true">
+            <input type="hidden" name="topic_id" value="{{ topic.id }}">
+            <button type="submit"> Delete</button>
+
+
+
+
+
+        </form>
     {% endfor %}
     </ul>
 {% else %}
@@ -12,6 +23,8 @@
     {% csrf_token %}
     {{ form.as_p}}
     <input type="submit" value="Add new topic">
+    <input type="hidden" name="add" value="true">
+
 
 
 

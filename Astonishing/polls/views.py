@@ -1,5 +1,5 @@
 
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from django.http import Http404, HttpResponse
 from django.template import context, loader
@@ -20,7 +20,7 @@ def index(request):
         customer = Customer.objects.all().order_by("created_at")[0]
         context = {"latest_topic_list":latest_topic_list}
 
-        if request.method == 'POST':
+        if request.method == 'POST' and 'add' in request.POST:
             form = TopicForm(request.POST)
 
             if form.is_valid():
@@ -28,9 +28,20 @@ def index(request):
                 topic.customer = customer
                 topic.save()
 
+        if request.method == 'POST' and 'delete_topic' in request.POST:
+            topic_id = request.POST.get('topic_id')
+            topic = get_object_or_404(Topic,id=topic_id)
+            topic.delete()
+            
+            form = TopicForm()
+
+
+
 
         if request.method == 'GET':
             form = TopicForm()
+
+            
 
     except Exception as e:
         raise Http404(f'Error: {e}')
@@ -39,6 +50,7 @@ def index(request):
         "latest_topic_list":latest_topic_list,
         'form': form
         }
+
     return render(request,
     "polls/index.html",
     context)
