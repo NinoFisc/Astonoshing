@@ -1,5 +1,7 @@
 
 from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
+
 
 from django.http import Http404, HttpResponse
 from django.template import context, loader
@@ -12,12 +14,12 @@ from .forms import QuestionForm, TopicForm
 
 # Create your views here.
 
-
+@login_required
 def index(request):
 
     try:
         latest_topic_list = Topic.objects.all().order_by("-created_at")[:5]
-        customer = Customer.objects.all().order_by("created_at")[0]
+        customer = get_object_or_404(Customer,id=request.user.id)
         context = {"latest_topic_list":latest_topic_list}
 
         if request.method == 'POST':
