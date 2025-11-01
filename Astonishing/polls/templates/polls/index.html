@@ -6,7 +6,7 @@
             {% csrf_token %}
             <input  type="hidden" name="delete_topic" value="true">
             <input type="hidden" name="topic_id" value="{{ topic.id }}">
-            <button type="submit"> Delete</button>
+            <button type="submit" class="btn btn-danger" onclick="return confirm('Delete {{topic.name}}')"> Delete</button>
 
 
 

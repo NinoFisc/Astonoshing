@@ -17,6 +17,12 @@
         {% for question in questions %}
             <li>
                 <p> {{question.question_text}} </p>
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="delete_question" value="true">
+                    <input type="hidden" name="question_id" value="{{question.id}}">
+                    <button type="submit" class="btn btn-danger" onclick="return comfirm('Delete: {{question.question_text}}')">Delete</button>
+                </form>
             </li>
         {% endfor %}
     </ul>
@@ -28,6 +34,7 @@
     
     {{ form.as_p}}
     <input type="submit" value="Add question"> 
+    <input type="hidden" name="add" value="true">
     
     
 </form>

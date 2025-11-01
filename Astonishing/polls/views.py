@@ -20,23 +20,19 @@ def index(request):
         customer = Customer.objects.all().order_by("created_at")[0]
         context = {"latest_topic_list":latest_topic_list}
 
-        if request.method == 'POST' and 'add' in request.POST:
-            form = TopicForm(request.POST)
+        if request.method == 'POST':
+            if 'add' in request.POST:
+                form = TopicForm(request.POST)
 
-            if form.is_valid():
-                topic = form.save(commit=False)
-                topic.customer = customer
-                topic.save()
-
-        if request.method == 'POST' and 'delete_topic' in request.POST:
-            topic_id = request.POST.get('topic_id')
-            topic = get_object_or_404(Topic,id=topic_id)
-            topic.delete()
-            
-            form = TopicForm()
-
-
-
+                if form.is_valid():
+                    topic = form.save(commit=False)
+                    topic.customer = customer
+                    topic.save()
+            if 'delete_topic' in request.POST:
+                topic_id = request.POST.get('topic_id')
+                topic = get_object_or_404(Topic,id=topic_id)
+                topic.delete()
+                form = TopicForm()
 
         if request.method == 'GET':
             form = TopicForm()
@@ -62,14 +58,22 @@ def topic(request, topic_name):
         questions = Question.objects.filter(topic=topic)
 
         if request.method == 'POST':
-            form = QuestionForm(request.POST)
+            if 'add' in request.POST:
+                form = QuestionForm(request.POST)
 
-            if form.is_valid():
+                if form.is_valid():
+                    question = form.save(commit=False)
+                    question.topic = topic
+                    question.save()
+            if 'delete_question' in request.POST:
+                question_id = request.POST.get('question_id')
+                question = get_object_or_404(Question, id= question_id)
+                question.delete()
 
-                question = form.save(commit=False)
-                question.topic = topic
-                question.save()
-        
+                form = TopicForm()
+
+
+                
 
         if request.method == 'GET':
             form = QuestionForm()
